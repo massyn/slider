@@ -1,0 +1,2 @@
+# slider
+Slideshows as code
