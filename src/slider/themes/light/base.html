@@ -1,0 +1,14 @@
+{# A light theme: the default layouts on white, by swapping the colours. #}
+{% extends "stage.html" %}
+{% block theme_css %}
+  :root {
+    --bg: #e9ecf2;
+    --stage: #ffffff;
+    --text: #1d2433;
+    --muted: #5d6a85;
+    --accent: #2f6fed;
+    --accent-2: #8a4fff;
+    --strong: #000;
+  }
+  .slide code { color: #7a35d6; }
+{% endblock %}

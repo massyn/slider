@@ -1,0 +1,5 @@
+{# Overrides the title layout: a shell prompt and a blinking cursor. #}
+<h1><span class="prompt">&gt;</span> {{ slide.title }}<span class="cursor"></span></h1>
+{% if slide.subtitle %}
+<p class="subtitle"># {{ slide.subtitle }}</p>
+{% endif %}

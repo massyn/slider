@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "slider"
+version = "0.1.0"
+description = "Turn Markdown files into an HTML presentation, a narrated MP4 or a PowerPoint file."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "python-dotenv",
+    "PyYAML",
+    "Jinja2",
+    "Markdown",
+    "playwright",
+    "edge-tts",
+    "mutagen",
+    "imageio-ffmpeg",
+    "python-pptx",
+]
+
+[project.scripts]
+slider = "slider.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+slider = ["themes/**/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

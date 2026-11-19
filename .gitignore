@@ -159,6 +159,14 @@ ENV/
 env.bak/
 venv.bak/
 
+# slider: local layout folders and generated decks (themes keep their HTML)
+.cache/
+data/
+*.html
+!src/slider/themes/**/*.html
+*.mp4
+*.pptx
+
 # Conda environments
 conda-meta/
 
