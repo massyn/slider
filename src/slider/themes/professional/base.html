@@ -1,0 +1,25 @@
+{# A corporate theme: white stage, navy headings and a blue accent, after the mddoco professional theme. #}
+{% extends "stage.html" %}
+{% block theme_css %}
+  :root {
+    --bg: #dfe5ea;
+    --stage: #ffffff;
+    --text: #263238;
+    --muted: #546e7a;
+    --accent: #2d6cbe;
+    --accent-2: #1a3a5c;
+    --strong: #1a3a5c;
+    --font: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  .stage { background: var(--stage); border-top: 0.35cqh solid #1a3a5c; }
+  .slide-title { color: #1a3a5c; }
+  .layout-title h1 {
+    background: none;
+    color: #1a3a5c;
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+  }
+  .body th { background: #1a3a5c; color: #fff; border-bottom: none; }
+  .body pre { background: #f4f6f8; }
+  .column { border-color: #b0bec5; background: #f4f6f8; }
+{% endblock %}

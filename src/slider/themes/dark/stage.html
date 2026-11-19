@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ deck.get('title', 'Slides') }}</title>
+<style>
+  :root {
+    --bg: #0b1020;
+    --stage: #121a33;
+    --text: #e8ecf8;
+    --muted: #8f9bbd;
+    --accent: #5b9dff;
+    --accent-2: #b48cff;
+    --font: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    --mono: "Cascadia Code", Consolas, "SF Mono", monospace;
+    --strong: #fff;
+    --speed: 0.55s;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  /* 16:9 stage, scaled to fit the window; text sizes follow its height */
+  .stage {
+    position: relative;
+    width: min(100vw, 177.78vh);
+    height: min(100vh, 56.25vw);
+    container-type: size;
+    font-size: 4cqh;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 85% 10%, color-mix(in srgb, var(--accent-2) 18%, transparent), transparent 45%),
+      radial-gradient(circle at 10% 95%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 45%),
+      var(--stage);
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    padding: 2.4em 3em 3em;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: transform var(--speed) cubic-bezier(.2,.7,.2,1), opacity var(--speed);
+  }
+  .slide.past { transform: translateX(-100%); }
+  .slide.current { transform: none; opacity: 1; }
+
+  .slide-title {
+    margin: 0 0 0.9em;
+    font-size: 1.9em;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .slide-title::after {
+    content: "";
+    display: block;
+    width: 2.2em;
+    height: 0.12em;
+    margin-top: 0.3em;
+    border-radius: 1em;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  }
+
+  .slide a { color: var(--accent); }
+  .slide code { font-family: var(--mono); font-size: 0.9em; color: var(--accent-2); }
+  .slide strong { color: var(--strong); }
+
+  /* Items revealed one at a time */
+  .step {
+    opacity: 0;
+    transform: translateY(0.5em);
+    transition: opacity 0.35s, transform 0.35s;
+  }
+  .step.shown { opacity: 1; transform: none; }
+
+  /* Chrome: progress bar and counter */
+  .progress {
+    position: absolute;
+    left: 0; bottom: 0;
+    height: 0.25cqh;
+    min-height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transition: width var(--speed);
+  }
+  .footer {
+    position: absolute;
+    left: 3em; right: 3em; bottom: 1.1em;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.5em;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* title */
+  .layout-title { justify-content: center; align-items: flex-start; }
+  .layout-title h1 {
+    margin: 0;
+    font-size: 3.2em;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    background: linear-gradient(90deg, var(--text), color-mix(in srgb, var(--accent) 70%, var(--text)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .layout-title .subtitle { margin: 0.6em 0 0; font-size: 1.2em; color: var(--muted); }
+
+  .slide-subtitle { margin: -0.6em 0 0.9em; font-size: 0.9em; color: var(--muted); }
+
+  /* Markdown bodies: content slides and columns */
+  .body p { margin: 0 0 0.8em; }
+  .body ul, .body ol { margin: 0 0 0.8em; padding-left: 1.2em; line-height: 1.35; }
+  .body li { margin-bottom: 0.5em; }
+  .body li::marker { color: var(--accent); }
+  .body pre {
+    margin: 0 0 0.8em;
+    padding: 0.7em 0.9em;
+    border-radius: 0.4em;
+    background: color-mix(in srgb, var(--text) 7%, transparent);
+    overflow: auto;
+    font-size: 0.8em;
+  }
+  .body pre code { color: var(--text); }
+  .body table { border-collapse: collapse; margin-bottom: 0.8em; }
+  .body th, .body td {
+    padding: 0.3em 0.8em;
+    text-align: left;
+    border-bottom: 1px solid color-mix(in srgb, var(--text) 15%, transparent);
+  }
+  .body img { max-width: 100%; }
+
+  /* content */
+  .layout-content .body { font-size: 1.15em; line-height: 1.5; max-width: 36em; }
+  .layout-columns .intro { font-size: 1em; margin-bottom: 1em; }
+
+  /* columns */
+  .columns {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(var(--cols), 1fr);
+    gap: 1.2em;
+    align-content: start;
+  }
+  .column {
+    padding: 1em 1.2em;
+    border-radius: 0.5em;
+    background: color-mix(in srgb, var(--text) 5%, transparent);
+    border: 1px solid color-mix(in srgb, var(--text) 10%, transparent);
+  }
+  .column h3 { margin: 0 0 0.5em; font-size: 1.1em; color: var(--accent); }
+  .column .body { font-size: 0.9em; line-height: 1.45; }
+  .column .body > :first-child { margin-top: 0; }
+  .column .body > :last-child { margin-bottom: 0; }
+
+{% block theme_css %}{% endblock %}
+</style>
+</head>
+<body>
+<main class="stage" aria-live="polite">
+{% for slide in slides %}
+  <section class="slide layout-{{ slide.layout }}" data-voice="{{ slide.voice | trim }}">
+{{ slide.html }}
+  </section>
+{% endfor %}
+  <div class="footer"><span>{{ deck.get('title', '') }}</span><span class="counter"></span></div>
+  <div class="progress"></div>
+</main>
+<script>
+{% include "slider.js" %}
+</script>
+</body>
+</html>

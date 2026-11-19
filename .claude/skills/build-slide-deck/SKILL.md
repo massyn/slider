@@ -18,7 +18,7 @@ A deck is a Markdown file, or a folder of them. Nothing else is needed.
 ---
 title: My Presentation      # defaults to the first slide's title
 author: Phil Massyn         # PowerPoint file properties only
-theme: default              # default, light or terminal; `-t` on the command line overrides it
+theme: default              # default, light, dark, professional, academic, vanilla or terminal; `-t` on the command line overrides it
 voice:                      # used by --format video only
   enabled: true             # false: silent video, each slide held SLIDER_HOLD seconds
   engine: edge-tts          # the only engine

@@ -1,0 +1,14 @@
+{% if slide.title %}
+<h2 class="slide-title">{{ slide.title }}</h2>
+{% endif %}
+{% if slide.body %}
+<div class="body intro">{{ slide.body | md }}</div>
+{% endif %}
+<div class="columns" style="--cols: {{ slide.columns | length }}">
+{% for column in slide.columns %}
+  <div class="column">
+    <h3>{{ column.heading }}</h3>
+    <div class="body">{{ column.body | md }}</div>
+  </div>
+{% endfor %}
+</div>

@@ -21,6 +21,7 @@ src/slider/themes/
     columns.html
     slider.js         navigation script, included by stage.html
   light/              the same files, with base.html swapping the colours
+  dark/ professional/ academic/ vanilla/   likewise: colours and fonts in base.html
   terminal/           the same files, with its own title.html and fonts
 ```
 
@@ -62,7 +63,7 @@ python run.py my-deck -t acme --themes-dir ~/github/slider-themes
 
 or set it once in `.env`: `SLIDER_THEMES_DIR=C:/Users/you/github/slider-themes`, then `theme: acme` in the deck's front matter or `-t acme` is enough. Use a full path in `.env`: `~` is not expanded there.
 
-- **The themes folder replaces the bundled one, it does not add to it.** With `--themes-dir` set, `default`, `light` and `terminal` are not available (`-t light` fails with "not found") unless you copy one in: `--new-theme light --base light --themes-dir <folder>`.
+- **The themes folder replaces the bundled one, it does not add to it.** With `--themes-dir` set, the bundled themes (`default`, `light`, `dark`, `professional`, `academic`, `vanilla`, `terminal`) are not available (`-t light` fails with "not found") unless you copy one in: `--new-theme light --base light --themes-dir <folder>`.
 - **A copy is a snapshot.** When slider's own templates change (new layouts, fixes), nothing reaches existing copies. Keep your changes small and in `theme_css` so they are easy to re-apply to a fresh copy.
 - The repo's `tests/test_render.py` only covers the bundled themes. Check an external theme by rendering a deck with it (the sample is `examples/preso`) and, for the video contract, with `-f video`.
 - Assets must be self-contained in the page (inline CSS, data URIs): the output must still work from a `file://` URL, away from your themes folder.

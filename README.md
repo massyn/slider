@@ -70,8 +70,12 @@ A slide with no title, started by a line of three dashes.
 | `default` | Dark blue stage with a blue and violet accent |
 | `light` | The same layouts on white |
 | `terminal` | Green on black, monospaced, with its own title layout |
+| `dark` | Near-black with a blue and green accent |
+| `professional` | White with navy headings and a blue accent |
+| `academic` | Black on white in a serif font, with centred titles |
+| `vanilla` | Plain black on white, no decoration |
 
-A theme is a self-contained folder under `src/slider/themes/`: its page template, layouts and navigation script all live together, so it can be copied anywhere. `light` differs from `default` only in its colours, and `terminal` also has its own title layout.
+A theme is a self-contained folder under `src/slider/themes/`: its page template, layouts and navigation script all live together, so it can be copied anywhere. The themes differ in their colours and fonts, and `terminal` also has its own title layout. `dark`, `professional`, `academic`, `vanilla` and `terminal` match the look of the themes of the same name in mddoco.
 
 To make your own, copy an existing theme into a folder of your choosing (this repo or not):
 

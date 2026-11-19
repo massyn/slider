@@ -1,0 +1,25 @@
+{# A plain theme: black on white in the system font, no gradients or decoration, after the mddoco vanilla theme. #}
+{% extends "stage.html" %}
+{% block theme_css %}
+  :root {
+    --bg: #ffffff;
+    --stage: #ffffff;
+    --text: #000000;
+    --muted: #444444;
+    --accent: #000000;
+    --accent-2: #000000;
+    --strong: #000000;
+    --font: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  }
+  .stage { background: #fff; }
+  .slide-title::after { display: none; }
+  .slide a { color: #0000ee; }
+  .slide code { color: #000; }
+  .layout-title h1 { background: none; color: #000; -webkit-background-clip: border-box; background-clip: border-box; }
+  .body table { border: 1px solid #999; }
+  .body th, .body td { border: 1px solid #999; }
+  .body th { background: #eee; }
+  .body pre { background: #f4f4f4; }
+  .column { border-radius: 0; border-color: #999; background: transparent; }
+  .progress { background: #000; }
+{% endblock %}
