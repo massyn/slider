@@ -5,6 +5,7 @@ navigation) plus one <layout>.html per slide layout.
 """
 
 import logging
+import re
 from pathlib import Path
 from typing import Any
 
@@ -26,6 +27,17 @@ logger = logging.getLogger(__name__)
 MARKDOWN_EXTENSIONS = ["tables", "fenced_code", "attr_list"]
 
 
+MERMAID_BLOCK = re.compile(
+    r'<pre><code class="language-mermaid">(.*?)</code></pre>', re.DOTALL
+)
+
+
+def markdown_html(text: str) -> str:
+    """Markdown to HTML, with ```mermaid blocks turned into <pre class="mermaid">."""
+    html = markdown.markdown(text, extensions=MARKDOWN_EXTENSIONS)
+    return MERMAID_BLOCK.sub(r'<pre class="mermaid">\1</pre>', html)
+
+
 def render_deck(
     deck: dict[str, Any], themes_dir: Path, theme: str | None = None
 ) -> str:
@@ -45,9 +57,7 @@ def render_deck(
         trim_blocks=True,
         lstrip_blocks=True,
     )
-    env.filters["md"] = lambda text: Markup(
-        markdown.markdown(str(text), extensions=MARKDOWN_EXTENSIONS)
-    )
+    env.filters["md"] = lambda text: Markup(markdown_html(str(text)))
 
     slides = []
     for slide in deck["slides"]:
@@ -70,4 +80,10 @@ def render_deck(
         )
 
     logger.info("Rendered %d slides with theme '%s'", len(slides), theme)
-    return env.get_template("base.html").render(deck=deck["deck"], slides=slides)
+    html = "".join(s["html"] for s in slides)
+    return env.get_template("base.html").render(
+        deck=deck["deck"],
+        slides=slides,
+        has_code="<pre><code" in html,
+        has_mermaid='<pre class="mermaid">' in html,
+    )

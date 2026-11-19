@@ -63,6 +63,23 @@ A slide with no title, started by a line of three dashes.
 - `{: layout=columns }` on the title line turns each `###` section into a column.
 - Front matter (first file only) sets `title`, `theme` and `voice` (`enabled`, `speaker`, `rate`).
 
+## Code and diagrams
+
+A fenced block with a language is syntax highlighted, and a block marked `mermaid` is drawn as a diagram:
+
+````markdown
+```python
+print("highlighted")
+```
+
+```mermaid
+flowchart LR
+    A --> B
+```
+````
+
+Both libraries (highlight.js and Mermaid) load from a CDN, and only when a deck uses them, so such a deck needs network access to display them. In PowerPoint, code is plain monospaced text and a diagram appears as its source.
+
 ## Themes
 
 | Theme | Look |

@@ -89,7 +89,7 @@ def test_sample_deck_exports_and_deck_title_is_set(tmp_path):
     out = tmp_path / "preso.pptx"
     export_pptx(load_deck(SAMPLE), out)
     prs = Presentation(str(out))
-    assert len(prs.slides) == 12
+    assert len(prs.slides) == 13
     assert prs.core_properties.title == "My Presentation"
 
 
