@@ -1,0 +1,26 @@
+{# A restrained serif theme: black on white, Georgia, underlined links, after the mddoco academic theme. #}
+{% extends "stage.html" %}
+{% block theme_css %}
+  :root {
+    --bg: #e8e6e1;
+    --stage: #ffffff;
+    --text: #111111;
+    --muted: #555555;
+    --accent: #111111;
+    --accent-2: #777777;
+    --strong: #000000;
+    --font: Georgia, "Times New Roman", Times, serif;
+  }
+  .stage { background: var(--stage); }
+  .slide a { text-decoration: underline; }
+  .slide-title { text-align: center; }
+  .slide-title::after { margin-left: auto; margin-right: auto; height: 2px; border-radius: 0; background: #111; }
+  .layout-title { align-items: center; text-align: center; }
+  .layout-title h1 { background: none; color: #111; -webkit-background-clip: border-box; background-clip: border-box; }
+  .body h3 { font-style: italic; }
+  .body li::marker { color: #111; }
+  .slide code { color: #111; }
+  .body pre { background: #f5f5f5; border: 1px solid #ccc; }
+  .column { border-color: #ccc; background: transparent; border-radius: 0; }
+  .progress { background: #111; }
+{% endblock %}

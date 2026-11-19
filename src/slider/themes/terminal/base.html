@@ -1,0 +1,39 @@
+{# A green-on-black terminal: new colours and fonts, flat backgrounds, and its own title layout. #}
+{% extends "stage.html" %}
+{% block theme_css %}
+  :root {
+    --bg: #000;
+    --stage: #050805;
+    --text: #b6f5c4;
+    --muted: #4f9a63;
+    --accent: #33ff66;
+    --accent-2: #33ff66;
+    --strong: #eafff0;
+    --font: var(--mono);
+  }
+  .stage { background: var(--stage); }
+  .slide-title::before { content: "$ "; color: var(--muted); }
+  .slide-title::after { display: none; }
+
+  .layout-title h1 {
+    background: none;
+    color: var(--accent);
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+    font-size: 2.6em;
+  }
+  .layout-title .prompt { color: var(--muted); }
+  .layout-title .cursor {
+    display: inline-block;
+    width: 0.5em;
+    height: 0.9em;
+    margin-left: 0.15em;
+    vertical-align: -0.1em;
+    background: var(--accent);
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .column { border-radius: 0; border-color: var(--muted); background: transparent; }
+  .progress { background: var(--accent); }
+{% endblock %}
