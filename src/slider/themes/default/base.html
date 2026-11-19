@@ -1,2 +1,5 @@
 {# The default theme: a dark blue stage with a blue and violet accent. #}
 {% extends "stage.html" %}
+
+{% block hljs_stylesheet %}<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.12.0/styles/github-dark.min.css" integrity="sha384-wH75j6z1lH97ZOpMOInqhgKzFkAInZPPSPlZpYKYTOqsaizPvhQZmAtLcPKXpLyH" crossorigin="anonymous">{% endblock %}
+{% block mermaid_theme %}dark{% endblock %}

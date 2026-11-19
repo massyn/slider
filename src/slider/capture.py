@@ -8,6 +8,7 @@ import logging
 from dataclasses import dataclass
 from pathlib import Path
 
+from playwright.async_api import TimeoutError as PlaywrightTimeoutError
 from playwright.async_api import async_playwright
 
 from slider.deck import DeckError
@@ -17,6 +18,8 @@ logger = logging.getLogger(__name__)
 
 # Stills are taken between transitions, so switch them off to capture the settled state.
 _NO_MOTION = "*, *::before, *::after { transition: none !important; animation: none !important; }"
+
+MERMAID_TIMEOUT_MS = 20_000
 
 _STRUCTURE = """() => [...document.querySelectorAll('.slide')].map(slide => ({
     voice: slide.dataset.voice || '',
@@ -42,6 +45,22 @@ async def film(page_file: Path, folder: Path, width: int, height: int) -> list[S
                 "() => typeof window.slider?.show === 'function'"
             ):
                 raise DeckError("Theme does not expose window.slider.show(slide, step)")
+
+            # Mermaid draws asynchronously after load and marks each finished diagram.
+            try:
+                await page.wait_for_function(
+                    "() => !document.querySelector('pre.mermaid:not([data-processed])')",
+                    timeout=MERMAID_TIMEOUT_MS,
+                )
+            except PlaywrightTimeoutError as e:
+                raise DeckError(
+                    "Mermaid diagrams did not render (they load from a CDN, so "
+                    "this needs network access)"
+                ) from e
+            if await page.evaluate(
+                "() => !!document.querySelector('pre.mermaid [aria-roledescription=error]')"
+            ):
+                raise DeckError("A Mermaid diagram has a syntax error")
 
             stills = []
             for moment in moments(await page.evaluate(_STRUCTURE)):

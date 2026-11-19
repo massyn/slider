@@ -85,9 +85,20 @@ Jinja2 is configured with **StrictUndefined** (a misspelt variable is an error n
 
 `deck` is the front matter mapping (`deck.title`, and so on). Use `deck.get('x', default)` for optional keys.
 
-**The page template** (`base.html`, or `stage.html`) renders the whole page. Variables: `deck` and `slides`, where each entry has `layout`, `voice` and `html` (the rendered layout template, already safe to output).
+**The page template** (`base.html`, or `stage.html`) renders the whole page. Variables: `deck`, `slides`, `has_code` and `has_mermaid`, where each entry has `layout`, `voice` and `html` (the rendered layout template, already safe to output).
 
 Filter available in every template: `md`, which renders Markdown to HTML (tables, fenced code and attr_list enabled). It is safe to output as is.
+
+## Code highlighting and diagrams
+
+`stage.html` loads highlight.js when the deck has a code block (`has_code`) and Mermaid when it has a diagram (`has_mermaid`), both from a CDN. A fenced ` ```mermaid ` block reaches the template as `<pre class="mermaid">`, which Mermaid replaces with an SVG. A theme extending `stage.html` gets this for free, and picks the light or dark look by overriding two blocks in `base.html`:
+
+```jinja
+{% block hljs_stylesheet %}<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.12.0/styles/github-dark.min.css">{% endblock %}
+{% block mermaid_theme %}dark{% endblock %}
+```
+
+`default`, `dark` and `terminal` do this; the rest keep the light defaults (`github` and `default`). The video build waits for every `pre.mermaid` to gain `data-processed`, so a theme with its own page template must keep that class and let Mermaid process it.
 
 ## The contract that video capture and navigation rely on
 

@@ -41,6 +41,7 @@ voice:                      # used by --format video only
 - `---` directly under a line of text is a normal heading underline, not a slide break. Leave a blank line before it.
 - Headings, `---` and voice comments inside fenced code blocks are left alone.
 - Content is ordinary Markdown: paragraphs, lists, bold, italic, inline code, links, fenced code, tables.
+- A fenced block with a language (` ```python `) is syntax highlighted. A block marked ` ```mermaid ` is drawn as a diagram. Both load their libraries from a CDN (highlight.js and Mermaid), and only when the deck uses them, so the page needs network access to show them; a deck with neither works offline.
 
 ## Layouts
 
@@ -83,13 +84,13 @@ Most slides need no layout. It is inferred:
 ```
 
 - `make run`, `make video`, `make test`, `make lint`, `make format` wrap the common ones.
-- **HTML:** open it and present. Right, Space, Enter or PageDown for next; Left or PageUp for back; Home and End; `F` for fullscreen. Click the right two thirds to go forward, the left third to go back. Swipe on touch screens.
-- **Video:** needs Chromium (`python -m playwright install chromium`) and a network connection for the first narration of each line. Video options live in `.env` (see `.env.example`).
-- **PowerPoint:** uses PowerPoint's stock layouts, so the theme's look is not carried over. Titles, subtitles, lists, bold, italic, links, code (as monospaced text), tables (flattened to `a | b` lines) and narration (speaker notes) survive. Restyle in Slide Master. The slides are 4:3.
+- **HTML:** open it and present (code highlighting and diagrams need network access). Right, Space, Enter or PageDown for next; Left or PageUp for back; Home and End; `F` for fullscreen. Click the right two thirds to go forward, the left third to go back. Swipe on touch screens.
+- **Video:** needs Chromium (`python -m playwright install chromium`) and a network connection for the first narration of each line, and for Mermaid diagrams. A diagram with a syntax error stops the build. Video options live in `.env` (see `.env.example`).
+- **PowerPoint:** uses PowerPoint's stock layouts, so the theme's look is not carried over. Titles, subtitles, lists, bold, italic, links, code (as monospaced text, unhighlighted), tables (flattened to `a | b` lines) and narration (speaker notes) survive. Restyle in Slide Master. The slides are 4:3.
 
 ## Not supported yet
 
-Images, `.md.j2` templating, and reveal steps. Do not invent syntax for them.
+Images, PowerPoint diagrams (a Mermaid block comes through as its source text), `.md.j2` templating, and reveal steps. Do not invent syntax for them.
 
 ## Checklist before saying a deck is done
 
